@@ -1,0 +1,77 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+	<title>Fast Feeds</title> 
+	<meta name="viewport" content="width=device-width, initial-scale=1"> 
+	<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.1/jquery.mobile-1.2.1.min.css" />
+	<script src="http://code.jquery.com/mobile/1.2.1/jquery.mobile-1.2.1.min.js"></script>
+	
+	<script type="text/javascript">
+	
+	
+	$(document).ready(function(){
+	//$("#list-page").bind('pageInit',function(){
+		//alert('asdf');
+		var items = 0;
+		$.ajax({
+			url: 'http://sudosaints.in/blog/api/get_posts/',
+			type:'GET',
+			dataType:"jsonp",
+			success: function(msg){
+				items = msg.posts;
+				for(i=0;i<items.length;i++) {
+					$("#itemsList").append('<li><a href="#single-page" data-theme="a" data-ajax="true" id="' + i + '">' + items[i].title + '</a></li>');
+				}
+				$('#itemsList').listview('refresh');
+			},
+			error: function(e,f,g){
+				//alert("error");
+				console.log(e);
+			}
+    	});
+    	
+    	$('li a').bind('click',function(e){
+			e.preventDefault();
+			alert('adsf');
+		});
+	});
+	
+	
+	</script>
+	
+</head> 
+<body> 
+
+<div data-role="page" id="list-page">
+
+	<div data-role="header" data-theme="b">
+		<h1>Fast Feeds</h1>
+   
+	</div>
+	<div data-role="content">	
+		<ul data-role="listview" data-inset="false" data-filter="false" id="itemsList">
+	   </ul>	
+	</div>
+</div>
+
+<!-- Single Blog Item Page -->
+
+<div data-role="page" id="single-page">
+
+	<div data-role="header" data-theme="b">
+
+<a href="#" data-icon="back" data-rel="back" title="Go back">Back</a>		
+<h1>News letter</h1>
+	</div>
+
+	<div data-role="content" data-theme="b">	
+		<p>This is page Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchange</p>		
+	</div>
+
+</div>
+
+
+
+</body>
+</html>
