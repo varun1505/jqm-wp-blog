@@ -4,85 +4,105 @@
 <title>Fast Feeds</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="js/underscore-min.js"></script>
 <link rel="stylesheet"
 	href="http://code.jquery.com/mobile/1.2.1/jquery.mobile-1.2.1.min.css" />
 <script
 	src="http://code.jquery.com/mobile/1.2.1/jquery.mobile-1.2.1.min.js"></script>
 
+
+<script type="text/html" id='news-list'>
+	<ul data-role="listview" data-inset="false" data-filter="false" id="itemsList">
+		<li id="0">
+			<a href="#single-page" data-transition="slide" data-theme="a" data-ajax="true" id="0">
+				Item 1
+			</a>
+		</li>
+		<%
+			_.each(items,function(item,key,list){
+				alert('asdf'); 
+				console.log(item);
+		%>
+		<li id="<%= key %>">
+			<a href="#single-page" data-transition="slide" data-theme="a" data-ajax="true" id="<%= key %>">
+				<%= item.title %>
+			</a>
+		</li>
+
+		<%
+			}); 
+		%>
+	</ul>
+</script>
+
+
 <script type="text/javascript">
 	//$(document).ready(function(){
 	var clickedItem = 0;
 	var items = 0;
+	var flag = 0;
+	var url = 'http://sudosaints.in/blog/api/get_posts/';
 	$(document).on(
 			'pageinit',
 			function() {
-				//$("#list-page").bind('pageInit',function(){
-				//alert('asdf');
-				
+				//flag = 1;
+				if(flag == 0){
+					flag = 1;
+				} else {
+					return false;
+				}
 				$.ajax({
-					url : 'http://sudosaints.in/blog/api/get_posts/',
+					url : url,
 					type : 'GET',
 					dataType : "jsonp",
 					success : function(msg) {
 						items = msg.posts;
 						for (i = 0; i < items.length; i++) {
 							$("#itemsList").append(
-									'<li id="' + i + '"><a href="#single-page" data-theme="a" data-ajax="true" id="' + i + '">'
+									'<li id="' + i + '"><a href="#single-page" data-transition="slide" data-theme="a" data-ajax="true" id="' + i + '">'
 											+ items[i].title + '</a></li>');
 						}
+						/* var template = $("#usage-list").html();
+						console.log(template);
+						$("#news-list").html(_.template(template,{items:items})); */
+						
 						$('#itemsList').listview('refresh');
+						
 						
 					},
 					error : function(e, f, g) {
-						//alert("error");
 						console.log(e);
 					}
 				});
-
-				/*$('li a').bind('vclick', function(e) {
-					//e.preventDefault();
-					
-					var id = $(this).attr('id');
-					//alert(id);
-					clickedItem = id;
-					var post = items[id];
-					$("#blog-title").html(post.title);
-					$("#blog-content").html(post.content);
-					
-					
-				});*/
 			});
 				
 			$(document).on('vclick', 'li',function(e) {
 				var id = $(this).attr('id');
 				var post = items[id];
-				console.log(post);
+				//console.log(post);
 				$("#blog-title").html(post.title);
 				$("#blog-content").html(post.content);
-		    });    
-				
-			$("#single-page").on('pageinit',function(){
-				
-				var post = items[clickedItem];
-				$("#blog-title").html(post.title);
-				$("#blog-content").html(post.content);
-			});
+		    });
 </script>
 
 </head>
 <body>
 
-	<div data-role="page" id="list-page">
+	<div data-role="page" id="index">
 
 		<div data-role="header" data-theme="b">
 			<h1>Fast Feeds</h1>
 
 		</div>
-		<div data-role="content">
+		<div data-role="content" id="blog-list">
 			<ul data-role="listview" data-inset="false" data-filter="false"
 				id="itemsList">
 			</ul>
 		</div>
+		<div data-role="footer" class="ui-bar" data-theme="b">
+			<a href="http://sudosaints.com/" data-role="link" target="_blank">&copy; SudoSaints</a>
+		</div>
+		
 	</div>
 
 	<!-- Single Blog Item Page -->
@@ -96,12 +116,11 @@
 		</div>
 
 		<div data-role="content" data-theme="b" id="blog-content">
-			<p>This is page Lorem Ipsum is simply dummy text of the printing
-				and typesetting industry. Lorem Ipsum has been the industry's
-				standard dummy text ever since the 1500s, when an unknown printer
-				took a galley of type and scrambled it to make a type specimen book.
-				It has survived not only five centuries, but also the leap into
-				electronic typesetting, remaining essentially unchange</p>
+			
+		</div>
+		
+		<div data-role="footer" class="ui-bar" data-theme="b">
+			<a href="http://sudosaints.com/" data-role="link" target="_blank">&copy; SudoSaints</a>
 		</div>
 
 	</div>
